@@ -39,15 +39,27 @@ app.get('/api/debug', (req, res) => {
 // Get cafes
 app.get('/api/cafes', async (req, res) => {
   try {
+    console.log('Supabase URL:', process.env.SUPABASE_URL);
+    console.log('Trying to fetch cafes...');
+    
     const { data, error } = await supabase
       .from('cafes')
       .select('*');
     
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error:', error);
+      throw error;
+    }
     
+    console.log('Cafes fetched:', data);
     res.json({ cafes: data || [] });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Catch error:', error);
+    res.status(500).json({ 
+      error: error.message,
+      type: error.constructor.name,
+      stack: error.stack
+    });
   }
 });
 
