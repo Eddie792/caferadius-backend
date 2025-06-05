@@ -39,31 +39,13 @@ app.get('/api/debug', (req, res) => {
 // Get cafes
 app.get('/api/cafes', async (req, res) => {
   try {
-    // Temporär: Dummy-Daten statt Supabase
-    const dummyCafes = [
-      {
-        id: 1,
-        name: "Café Testmann",
-        address: "Teststraße 123",
-        lat: 53.5511,
-        lng: 9.9937,
-        rating: 4.5,
-        is_partner: true,
-        discount_percentage: 20
-      },
-      {
-        id: 2,
-        name: "Rösterei Demo",
-        address: "Demoweg 456",
-        lat: 53.5623,
-        lng: 9.9635,
-        rating: 4.8,
-        is_partner: false,
-        discount_percentage: 0
-      }
-    ];
+    const { data, error } = await supabase
+      .from('cafes')
+      .select('*');
     
-    res.json({ cafes: dummyCafes });
+    if (error) throw error;
+    
+    res.json({ cafes: data || [] });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
