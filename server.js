@@ -25,6 +25,17 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'CafeRadius Backend läuft!' });
 });
 
+// Debug endpoint
+app.get('/api/debug', (req, res) => {
+  res.json({
+    message: 'Debug Info',
+    hasSupabaseUrl: !!process.env.SUPABASE_URL,
+    hasSupabaseKey: !!process.env.SUPABASE_KEY,
+    supabaseUrl: process.env.SUPABASE_URL ? 'Set' : 'Not set',
+    nodeEnv: process.env.NODE_ENV
+  });
+});
+
 // Get cafes
 app.get('/api/cafes', async (req, res) => {
   try {
