@@ -1,6 +1,9 @@
 const dns = require('node:dns');
 dns.setDefaultResultOrder('ipv4first');   // <- zwingt Node, zuerst die A-Records zu benutzen
 
+const https = require('https');
+https.globalAgent.options.family = 4;        // neu: zwingt undici/fetch auf IPv4
+
 const express = require('express');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
